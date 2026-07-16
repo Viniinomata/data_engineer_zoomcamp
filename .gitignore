@@ -227,3 +227,23 @@ override.tf
 override.tf.json
 *_override.tf
 *_override.tf.json
+
+
+# Airflow local runtime, configuration, and generated secrets
+airflow.cfg
+airflow.db
+unittests.cfg
+webserver_config.py
+airflow_local_settings.py
+simple_auth_manager_passwords.json.generated
+
+# Airflow logs and temporary files
+logs/
+airflow-*.pid
+*.log
+
+#dbt
+target/
+dbt_packages/
+logs/
+.env

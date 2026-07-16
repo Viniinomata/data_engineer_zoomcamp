@@ -1,0 +1,5 @@
+dlt[filesystem]
+s3fs
+boto3
+requests
+duckdb
