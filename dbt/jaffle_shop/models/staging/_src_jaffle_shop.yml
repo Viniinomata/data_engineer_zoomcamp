@@ -1,0 +1,84 @@
+version: 2
+
+sources:
+  - name: jaffle_shop
+    database: raw
+    schema: jaffle_shop
+    tables:
+      - name: customers
+        columns:
+          - name: id
+            description: "The customer ID"
+            data_tests:
+              - unique
+              - not_null
+          - name: first_name
+            description: "The customer's first name"
+            data_tests:
+              - not_null
+          - name: last_name
+            description: "The customer's last name"
+            data_tests:
+              - not_null
+      - name: orders
+        columns:
+          - name: id
+            description: "The order ID"
+            data_tests:
+              - unique
+              - not_null
+          - name: order_date
+            description: "The date the order was placed"
+            data_tests:
+              - not_null
+          - name: status
+            description: "The status of the order"
+            data_tests:
+              - accepted_values:
+                  arguments:
+                    values: ['completed', 'placed', 'return_pending', 'returned', 'shipped']
+        config:
+          freshness:
+            warn_after:
+              count: 6
+              period: hour
+            error_after:
+              count: 12
+              period: hour
+          loaded_at_field: _etl_loaded_at
+
+  - name: stripe
+    database: raw
+    schema: stripe
+    tables:
+      - name: payment
+        columns:
+          - name: orderid
+            description: "The ID of the order associated with the payment"
+            data_tests:
+              - not_null
+          - name: paymentmethod
+            description: "The method of payment used for the order"
+            data_tests:
+              - accepted_values:
+                  arguments:
+                    values: ['gift_card', 'credit_card', 'coupon', 'bank_transfer']
+          - name: status
+            description: "The status of the payment"
+            data_tests:
+              - accepted_values:
+                  arguments:
+                    values: ['success', 'fail']
+          - name: amount
+            description: "The amount paid for the order"
+            data_tests:
+              - not_null
+        config:
+          freshness:
+            warn_after:
+              count: 6
+              period: hour
+            error_after:
+              count: 12
+              period: hour
+          loaded_at_field: _batched_at
