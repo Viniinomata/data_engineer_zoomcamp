@@ -6,9 +6,10 @@ sources:
     schema: jaffle_shop
     tables:
       - name: customers
+        description: "The raw customers table contains information about the customers of Jaffle Shop."
         columns:
           - name: id
-            description: "The customer ID"
+            description: "The primary customer ID"
             data_tests:
               - unique
               - not_null
@@ -21,6 +22,7 @@ sources:
             data_tests:
               - not_null
       - name: orders
+        description: "The raw orders table contains information about the orders placed by customers."
         columns:
           - name: id
             description: "The order ID"
@@ -32,7 +34,7 @@ sources:
             data_tests:
               - not_null
           - name: status
-            description: "The status of the order"
+            description: "{{ doc('order_status') }}"
             data_tests:
               - accepted_values:
                   arguments:
@@ -52,6 +54,7 @@ sources:
     schema: stripe
     tables:
       - name: payment
+        description: "The raw payment table contains information about the payments made for orders."
         columns:
           - name: orderid
             description: "The ID of the order associated with the payment"
